@@ -11,10 +11,13 @@ class SupplierListType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // add a select for supplier name to integrate into product
+        // The selector is built through the provider entity in which the vendor name is stored
         $builder
             ->add('name', EntityType::class, [
                 'class'         => 'GescomBundle\Entity\Supplier',
                 'choice_label'  => 'name',
+                //  We want to be able to select several suppliers
                 'multiple'      => true,
             ]);
     }
