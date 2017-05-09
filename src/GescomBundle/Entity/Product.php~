@@ -38,7 +38,8 @@ class Product
     /**
      * @var Category
      *
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="products", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $category;
 
@@ -169,5 +170,9 @@ class Product
     public function getProductSupplier()
     {
         return $this->productSupplier;
+    }
+
+    public function resetProductSupplier(){
+        $this->productSupplier = new \Doctrine\Common\Collections\ArrayCollection();
     }
 }

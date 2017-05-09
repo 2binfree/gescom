@@ -19,6 +19,8 @@ class CategoryController extends Controller
         $categories = $this->getDoctrine()->getRepository('GescomBundle:Category')->findAll();
         return $this->render('@Gescom/Category/category.html.twig', [
             'categories'  => $categories,
+            'documentType' => "Catégorie",
+            'deletionUrl' => $this->generateUrl("delete_category", ['category' => 0]),
         ]);
     }
 
@@ -44,5 +46,41 @@ class CategoryController extends Controller
         return $this->render('@Gescom/Category/addCategory.html.twig', [
             'form'      =>  $form->createView(),
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param $category Category
+     * @return Response
+     * @Route("/category/edit/{category}", name="edit_category")
+     */
+    public function editAction(Request $request, Category $category)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(CategoryType::class, $category);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form  ->isValid()){
+            $em->flush();
+            return $this->redirectToRoute('category');
+        }
+
+        return $this->render('@Gescom/Category/addCategory.html.twig', [
+            'form'      =>  $form->createView(),
+        ]);
+    }
+
+    /**
+     * @param $category Category
+     * @Route("/category/delete/{category}", name="delete_category")
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteAction(Category $category)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($category);
+        $em->flush();
+        return $this->redirectToRoute('category');
     }
 }

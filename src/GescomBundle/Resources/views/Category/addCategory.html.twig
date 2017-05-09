@@ -3,7 +3,11 @@
 {% block body %}
     <div class="row margeTop">
         <div class="col s12 center-align">
-            <h5>Ajouter une catégorie</h5>
+            {% if form.vars.value.id is not null %}
+                <h5>Modifier une catégorie</h5>
+            {% else %}
+                <h5>Ajouter une catégorie</h5>
+            {% endif %}
         </div>
     </div>
     <div class="row">

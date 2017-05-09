@@ -2,4 +2,6 @@ gescom:
     resource: "@GescomBundle/Controller/"
     type:     annotation
     prefix:   /
+logout:
+    path: /logout
 

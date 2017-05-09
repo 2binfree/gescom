@@ -43,7 +43,7 @@ class Category
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="GescomBundle\Entity\Product", mappedBy="Category")
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
      */
     private $products;
 
@@ -144,5 +144,10 @@ class Category
     public function getProducts()
     {
         return $this->products;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }

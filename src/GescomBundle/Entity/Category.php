@@ -43,7 +43,7 @@ class Category
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="GescomBundle\Entity\Product", mappedBy="Category", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
      */
     private $products;
 

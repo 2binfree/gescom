@@ -62,7 +62,7 @@ class ProductSupplier
     /**
      * Get supplier
      *
-     * @return SSupplier
+     * @return Supplier
      */
     public function getSupplier()
     {

@@ -1,0 +1,16 @@
+<!--
+documentType : Catégorie, Fournisseur, Produit, ...
+deletionUrl : route to delete action
+-->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <h4>Suppression {{ documentType }}</h4>
+        <div>Vous êtes sur le point de supprimer l'élément </div>
+        <div id="deletionNameTarget"></div>
+        <p>En êtes-vous sur ?</p>
+    </div>
+    <div class="modal-footer">
+        <a id="deleteHref" href="{{ deletionUrl }}" class="modal-action modal-close waves-effect waves-green btn-flat">J'en suis sur</a>
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Heu..., j'hésite</a>
+    </div>
+</div>

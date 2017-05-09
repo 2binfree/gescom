@@ -1,37 +1,68 @@
 {% extends('@Gescom/base.html.twig') %}
 
 {% block body %}
-    <div class="row margeTop">
-        <div class="col s8 offset-s2">
+    <div class="row margeTop valign-wrapper">
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="col s1 offset-s1">
+                <a class="btn-floating btn-large waves-effect waves-light red" href="{{ path("add_product") }}">
+                    <i class="material-icons">add</i>
+                </a>
+            </div>
+        {% endif %}
+        <div class="col s9  left-align">
             <h4>Produits</h4>
         </div>
     </div>
     <div class="row">
-        <div class="col s8 offset-s2">
+        <div class="col s10 offset-s1">
             <table class="striped responsive-table">
                 <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Nom</th>
                     <th>Catégorie</th>
                     <th>Fournisseur</th>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <th></th>
+                        <th></th>
+                    {% endif %}
                 </tr>
                 </thead>
                 <tbody>
                 {% for product in products %}
-                <tr>
-                    <td>{{ product.id }}</td>
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.category.name }}</td>
-                    <td>
-                        {% for supplier in product.productSupplier %}
-                            {{ supplier.supplier.name }}
-                            {% if false == loop.last %}
-                                ,&nbsp;
+                    <tr>
+                        <td>{{ product.name }}</td>
+                        <td>
+                            {% if product.category.name is defined %}
+                                {{ product.category.name }}
+                            {% else %}
+                                --
                             {% endif %}
-                        {% endfor %}
-                    </td>
-                </tr>
+                        </td>
+                        <td>
+                            {% if product.productSupplier | length > 0 %}
+                                {% for supplier in product.productSupplier %}
+                                    {{ supplier.supplier.name }}
+                                    {% if false == loop.last %}
+                                        ,&nbsp;
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                --
+                            {% endif %}
+                        </td>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td>
+                                <a href="{{ path('edit_product', {'product': product.id}) }}">
+                                    <i class="small material-icons blue-text">mode_edit</i>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="#" class="deleteButton" data-id="{{ product.id }}">
+                                    <i class="small material-icons red-text modal-close">delete</i>
+                                </a>
+                            </td>
+                        {% endif %}
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>
@@ -44,4 +75,7 @@
             </a>
         </div>
     </div>
+
+    {% include('@Gescom/Modals/modalDeletion.html.twig') %}
+
 {% endblock %}

@@ -1,44 +1,61 @@
 {% extends('@Gescom/base.html.twig') %}
 
 {% block body %}
-    <div class="row margeTop">
-        <div class="col s8 offset-s2">
+    <div class="row margeTop valign-wrapper">
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="col s1 offset-s1">
+                <a class="btn-floating btn-large waves-effect waves-light red" href="{{ path("add_supplier") }}">
+                    <i class="material-icons">add</i>
+                </a>
+            </div>
+        {% endif %}
+        <div class="col s9  left-align">
             <h4>Fournisseurs</h4>
         </div>
     </div>
     <div class="row">
-        <div class="col s8 offset-s2">
+        <div class="col s10 offset-s1">
             <table class="striped responsive-table">
                 <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Nom</th>
                     <th>Code postal</th>
                     <th>Ville</th>
                     <th>Délai de livraison</th>
                     <th>Score</th>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <th></th>
+                        <th></th>
+                    {% endif %}
                 </tr>
                 </thead>
                 <tbody>
                 {% for supplier in suppliers %}
-                <tr>
-                    <td>{{ supplier.id }}</td>
-                    <td>{{ supplier.name }}</td>
-                    <td>{{ supplier.postalCode }}</td>
-                    <td>{{ supplier.town }}</td>
-                    <td>{{ supplier.deliveryTime }}</td>
-                    <td>{{ supplier.score }}</td>
-                </tr>
+                    <tr>
+                        <td>{{ supplier.name }}</td>
+                        <td>{{ supplier.postalCode }}</td>
+                        <td>{{ supplier.town }}</td>
+                        <td>{{ supplier.deliveryTime }}</td>
+                        <td>{{ supplier.score }}</td>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td>
+                                <a href="{{ path('edit_supplier', {'supplier': supplier.id}) }}">
+                                    <i class="small material-icons blue-text">mode_edit</i>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="#" class="deleteButton" data-id="{{ supplier.id }}">
+                                    <i class="small material-icons red-text modal-close">delete</i>
+                                </a>
+                            </td>
+                        {% endif %}
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
-    <div class="row center-align">
-        <div class="col s8 offset-s2">
-            <a class="btn-floating btn-large waves-effect waves-light red" href="{{ path("add_supplier") }}">
-                <i class="material-icons">add</i>
-            </a>
-        </div>
-    </div>
+
+    {% include('@Gescom/Modals/modalDeletion.html.twig') %}
+
 {% endblock %}

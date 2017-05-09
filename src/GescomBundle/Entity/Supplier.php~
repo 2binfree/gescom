@@ -35,7 +35,6 @@ class Supplier
      * @var string
      *
      * @ORM\Column(name="address", type="string", length=100)
-     * @Assert\NotEqualTo(value="" )
      */
     private $address;
 
@@ -59,7 +58,7 @@ class Supplier
      * @var string
      *
      * @ORM\Column(name="town", type="string", length=50)
-     * @Assert\Regex("/[A-Za-z -']+/")
+     * @Assert\Regex("/[A-Za-z \-']+/")
      */
     private $town;
 
@@ -371,13 +370,10 @@ class Supplier
 
     /**
      * @return bool
-     * @Assert\IsFalse(message="L'adresse doit être différente du nom et de l'email")
+     * @Assert\IsTrue(message="L'adresse doit être différente du nom et de l'email")
      */
     public function isAddressLegal()
     {
-        if ($this->address !== $this->mail && $this->address !== $this->name){
-            return true;
-        }
-        return false;
+        return ($this->address != $this->mail && $this->address != $this->name);
     }
 }

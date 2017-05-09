@@ -39,6 +39,7 @@ class Product
      * @var Category
      *
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="products", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $category;
 
