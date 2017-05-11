@@ -28,14 +28,14 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
-        $faker->seed(12345);
+        $faker->seed(1234);
         for ($i=0; $i<self::MAX_PRODUCT; $i++){
             $product = new Product();
             $product->setName($faker->unique()->words(2, true));
             $product->setDescription($faker->sentences(3, true));
-            $product->setCategory($this->getReference("categories_" . rand(0, 8)));
+            $product->setCategory($this->getReference("categories_" . rand(0, 9)));
             $suppliersTotal = rand(1, 3);
-            $supplierStartNumber = rand(0, LoadSupplierData::MAX_SUPPLIERS - 3);
+            $supplierStartNumber = rand(0, LoadSupplierData::MAX_SUPPLIERS - $suppliersTotal);
             for ($j=1; $j<=$suppliersTotal; $j++){
                 $productSupplier = new ProductSupplier();
                 $productSupplier->setProduct($product);

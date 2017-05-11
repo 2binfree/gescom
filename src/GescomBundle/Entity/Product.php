@@ -139,6 +139,14 @@ class Product
     }
 
     /**
+     * @param array $productSuppliers
+     */
+    public function setProductSuppliers($productSuppliers)
+    {
+        $this->productSupplier = $productSuppliers;
+    }
+
+    /**
      * Add productSupplier
      *
      * @param \GescomBundle\Entity\ProductSupplier $productSupplier

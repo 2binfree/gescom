@@ -17,8 +17,8 @@ class SupplierListType extends AbstractType
             ->add('name', EntityType::class, [
                 'class'         => 'GescomBundle\Entity\Supplier',
                 'choice_label'  => 'name',
-                //  We want to be able to select several suppliers
                 'multiple'      => true,
+                'choice_value'
             ]);
     }
 

@@ -26,7 +26,7 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
-        $faker->seed(12345);
+        $faker->seed(1234);
 
         $categoriesName = [
             "Ordinateur PC",

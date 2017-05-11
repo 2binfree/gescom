@@ -40,7 +40,7 @@ class ProductController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form  ->isValid()){
+        if ($form->isSubmitted() && $form->isValid()){
             $suppliers = $product->getProductSupplier()["name"];
             $product->resetProductSupplier();
             foreach($suppliers as $supplier){
@@ -68,6 +68,11 @@ class ProductController extends Controller
     public function editAction(Request $request, Product $product)
     {
         $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository("GescomBundle:Product");
+        $product = $repository->getProductById($product->getId());
+        $suppliers["name"] = $product->getProductSupplier();
+        $product->resetProductSupplier();
+        $product->setProductSuppliers($suppliers);
         $form = $this->createForm(ProductType::class, $product);
 
         $form->handleRequest($request);
