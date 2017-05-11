@@ -24,6 +24,11 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            remember_me:
+                secret: '%secret%'
+                lifetime: 604800
+                path: /
+
             anonymous: ~
             provider: dbal
             form_login:
@@ -34,4 +39,4 @@ security:
                 target: /
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/, roles: [IS_AUTHENTICATED_REMEMBERED] }

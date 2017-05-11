@@ -12,7 +12,7 @@
             <li><a href="{{ path('category') }}">Catégories</a></li>
             <li><a href="{{ path('product') }}">Produits</a></li>
             <li><a href="{{ path('supplier') }}">Fournisseurs</a></li>
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                 <li>
                     <a class="dropdown-button materialize-red lighten-1" href="#!" data-activates="dropdown1">
                         <strong>{{ app.user.username }}</strong>
@@ -25,7 +25,7 @@
             <li><a href="">Catégories</a></li>
             <li><a href="">Produits</a></li>
             <li><a href="">Fournisseurs</a></li>
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                 <li class="divider"></li>
                 <li><a href="#!">Profil</a></li>
                 <li><a href="#!">Compte</a></li>
