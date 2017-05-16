@@ -41,7 +41,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user = new User();
         $encoded = $encoder->encodePassword($user, $plainPassword);
         $user->setUsername('laurent');
-        $user->setEmail('laurent@gescom.com');
+        $user->setEmail('2binfree@gmail.com');
         $user->setRoles(['ROLE_READER']);
         $user->setPassword($encoded);
         $manager->persist($user);
@@ -49,7 +49,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user = new User();
         $encoded = $encoder->encodePassword($user, $plainPassword);
         $user->setUsername('admin');
-        $user->setEmail('admin@gescom.com');
+        $user->setEmail('laurent@revealers.co');
         $user->setRoles(['ROLE_ADMIN']);
         $user->setPassword($encoded);
         $manager->persist($user);

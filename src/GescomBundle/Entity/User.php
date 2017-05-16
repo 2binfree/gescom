@@ -58,6 +58,20 @@ class User implements UserInterface, Serializable
      */
     private $roles;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="password_change_token", type="string", length=100, nullable=true)
+     */
+    private $passwordChangeToken;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="password_change_limit_date", type="datetime", nullable=true)
+     */
+    private $passwordChangeLimitDate;
+
     public function __construct()
     {
         $this->isActive = true;
@@ -241,4 +255,60 @@ class User implements UserInterface, Serializable
     {
 
     }
+
+    /**
+     * Set passwordChangeToken
+     *
+     * @param string $passwordChangeToken
+     *
+     * @return User
+     */
+    public function setPasswordChangeToken($passwordChangeToken)
+    {
+        $this->passwordChangeToken = $passwordChangeToken;
+
+        return $this;
+    }
+
+    /**
+     * Get passwordChangeToken
+     *
+     * @return string
+     */
+    public function getPasswordChangeToken()
+    {
+        return $this->passwordChangeToken;
+    }
+
+    /**
+     * Set passwordChangeLimitDate
+     *
+     * @param \DateTime $passwordChangeLimitDate
+     *
+     * @return User
+     */
+    public function setPasswordChangeLimitDate($passwordChangeLimitDate)
+    {
+        $this->passwordChangeLimitDate = $passwordChangeLimitDate;
+
+        return $this;
+    }
+
+    /**
+     * Get passwordChangeLimitDate
+     *
+     * @return \DateTime
+     */
+    public function getPasswordChangeLimitDate()
+    {
+        return $this->passwordChangeLimitDate;
+    }
+
+    public function generateToken()
+    {
+        $today = new \DateTime("now");
+        $string = $this->getUsername() . $this->getEmail() . $today->getTimestamp();
+        return sha1($string);
+    }
+
 }

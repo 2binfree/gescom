@@ -2,15 +2,6 @@
 # http://symfony.com/doc/current/security.html
 security:
     providers:
-#        in_memory:
-#            memory:
-#                users:
-#                    admin:
-#                        password: $2y$12$OOP7TG4z7cfWfzwbzXDATupLzcIKNICUFClMfc8zSONvy350WJ5WO
-#                        roles: 'ROLE_ADMIN'
-#                    laurent:
-#                        password: $2y$12$OOP7TG4z7cfWfzwbzXDATupLzcIKNICUFClMfc8zSONvy350WJ5WO
-#                        roles: 'ROLE_READER'
         dbal:
             entity:
                 class: GescomBundle:User
@@ -28,7 +19,6 @@ security:
                 secret: '%secret%'
                 lifetime: 604800
                 path: /
-
             anonymous: ~
             provider: dbal
             form_login:
@@ -39,4 +29,6 @@ security:
                 target: /
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/forgotten, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/reset, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: [IS_AUTHENTICATED_REMEMBERED] }
