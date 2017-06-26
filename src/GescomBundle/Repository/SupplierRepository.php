@@ -26,7 +26,7 @@ class SupplierRepository extends EntityRepository
             foreach ($filter as $field => $value) {
                 if ($value !== "") {
                     if (strpos($field, "_") !== 0) {
-                        $search = "$alias.$field like '%$value%'";
+                        $search = "$alias.$field like '$value%'";
                         $query->andWhere($search);
                     }
                 }

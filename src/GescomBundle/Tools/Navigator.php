@@ -14,12 +14,17 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class Navigator extends Paginator
 {
+    /** @var array  */
+    private $filter;
+
     /** @var  int */
     private $currentPage;
 
     /** @var int */
     private $maxPage;
 
+    /** @var string */
+    private $context;
     /**
      * Navigator constructor.
      * @internal param Paginator $paginator
@@ -27,10 +32,15 @@ class Navigator extends Paginator
      * @param int $page
      * @param array $filter
      */
-    public function __construct($repository, $page, $filter)
+    public function __construct($context, $repository, $page, $filter)
     {
         parent::__construct($repository->getRowsByPage($page, $filter));
+        $this->context = $context;
+        $this->filter = $filter;
         $this->maxPage =  floor($this->count() / constant(get_class($repository) . "::MAX_RESULT"));
+        if ($this->maxPage == 0){
+            $this->maxPage = 1;
+        }
         $this->setCurrentPage($page);
     }
 
@@ -112,6 +122,25 @@ class Navigator extends Paginator
     public function getMaxPage()
     {
         return $this->maxPage;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEntityFilter()
+    {
+        $class = "\\GescomBundle\\Entity\\" . $this->context . "Filter";
+        $filter = new $class();
+        if (! is_null($this->filter)) {
+            foreach($this->filter as $field => $value) {
+                if ($value !== "") {
+                    $accessor = "set" . ucwords($field);
+                    $filter->$accessor($value);
+                }
+            }
+        }
+        return $filter;
+
     }
 
 }

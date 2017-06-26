@@ -6,6 +6,7 @@ use GescomBundle\Entity\Supplier;
 use GescomBundle\Entity\SupplierFilter;
 use GescomBundle\Form\SupplierFilterType;
 use GescomBundle\Form\SupplierType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,29 +18,15 @@ class SupplierController extends Controller
 
     /**
      * @param Request $request
-     * @param int $page
-     * @param array|null $filter
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/supplier/{page}/{filter}", name="supplier", requirements={"page" : "\d+"})
+     * @Route("/supplier", name="supplier")
+     * @Method({"get", "post"})
      */
-    public function indexAction(Request $request, $page = 1, $filter = null)
+    public function indexAction(Request $request)
     {
-        $filter = new SupplierFilter();
-        $filterData = $request->get("gescom_bundle_filter_type");
-        if (is_null($filterData)){
-            $data = $request->get("filter");
-            if (!is_null($data)){
-                $filterData = $this->get("gescom.filter.transform")->transform($data);
-            }
-        }
-        if (! is_null($filterData)) {
-            foreach($filterData as $field => $value) {
-                if ($value !== "") {
-                    $accessor = "set" . ucwords($field);
-                    $filter->$accessor($value);
-                }
-            }
-        }
+        $navigator = $this->get("gescom.navigator");
+        $filter = $navigator->getEntityFilter();
+
         $form = $this->createForm(SupplierFilterType::class, $filter);
 
         return $this->render('@Gescom/Supplier/supplier.html.twig', [

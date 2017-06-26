@@ -8,11 +8,7 @@ services:
         arguments:
             - "@request_stack"
             - "@doctrine.orm.entity_manager"
-            - "@gescom.filter.transform"
 
     gescom.navigator:
         class: GescomBundle\Tools\Navigator
         factory: "gescom.navigator.factory:get"
-
-    gescom.filter.transform:
-        class: GescomBundle\Tools\FilterTransform
