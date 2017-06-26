@@ -9,8 +9,11 @@
                 </a>
             </div>
         {% endif %}
-        <div class="col s9  left-align">
+        <div class="col s3  left-align">
             <h4>Produits</h4>
+        </div>
+        <div class="col s7 left-align">
+            {% include('@Gescom/Partials/paginator.html.twig') %}
         </div>
     </div>
     <div class="row">
@@ -28,7 +31,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for product in products %}
+                {% for product in data %}
                     <tr>
                         <td>{{ product.name }}</td>
                         <td>
@@ -70,12 +73,8 @@
     </div>
     <div class="row center-align">
         <div class="col s8 offset-s2">
-            <a class="btn-floating btn-large waves-effect waves-light red" href="{{ path("add_product") }}">
-                <i class="material-icons">add</i>
-            </a>
+            {% include('@Gescom/Partials/paginator.html.twig') %}
         </div>
     </div>
-
     {% include('@Gescom/Modals/modalDeletion.html.twig') %}
-
 {% endblock %}

@@ -3,6 +3,8 @@
 namespace GescomBundle\Controller;
 
 use GescomBundle\Entity\Supplier;
+use GescomBundle\Entity\SupplierFilter;
+use GescomBundle\Form\SupplierFilterType;
 use GescomBundle\Form\SupplierType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -14,17 +16,39 @@ class SupplierController extends Controller
 {
 
     /**
+     * @param Request $request
+     * @param int $page
+     * @param array|null $filter
      * @return \Symfony\Component\HttpFoundation\Response
-     * @internal param string $name
-     * @Route("/supplier", name="supplier")
+     * @Route("/supplier/{page}/{filter}", name="supplier", requirements={"page" : "\d+"})
      */
-    public function indexAction()
+    public function indexAction(Request $request, $page = 1, $filter = null)
     {
-        $suppliers = $this->getDoctrine()->getRepository('GescomBundle:Supplier')->findAll();
+        $filter = new SupplierFilter();
+        $filterData = $request->get("gescom_bundle_filter_type");
+        if (is_null($filterData)){
+            $data = $request->get("filter");
+            if (!is_null($data)){
+                $filterData = $this->get("gescom.filter.transform")->transform($data);
+            }
+        }
+        if (! is_null($filterData)) {
+            foreach($filterData as $field => $value) {
+                if ($value !== "") {
+                    $accessor = "set" . ucwords($field);
+                    $filter->$accessor($value);
+                }
+            }
+        }
+        $form = $this->createForm(SupplierFilterType::class, $filter);
+
         return $this->render('@Gescom/Supplier/supplier.html.twig', [
-            'suppliers'  => $suppliers,
+            'data'  => $this->get("gescom.navigator"),
+            'filter' => $filter,
+            'filterURL' => http_build_query($filter),
             'documentType' => "Fournisseur",
             'deletionUrl' => $this->generateUrl("delete_supplier", ['supplier' => 0]),
+            'form' => $form->createView(),
         ]);
     }
 

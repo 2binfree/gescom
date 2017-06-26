@@ -9,12 +9,29 @@
                 </a>
             </div>
         {% endif %}
-        <div class="col s9  left-align">
+        <div class="col s3 left-align">
             <h4>Fournisseurs</h4>
+        </div>
+        <div class="col s7 left-align">
+            {% include('@Gescom/Partials/paginator.html.twig') %}
         </div>
     </div>
     <div class="row">
         <div class="col s10 offset-s1">
+            <div class="row">
+                {{ form_start(form) }}
+                <div class="col s2">{{ form_label(form.name) }}{{ form_widget(form.name, {"value": filter.name } ) }}</div>
+                <div class="col s2">{{ form_label(form.postalCode) }}{{ form_widget(form.postalCode, {"value": filter.postalCode } ) }}</div>
+                <div class="col s2">{{ form_label(form.town) }}{{ form_widget(form.town, {"value": filter.town } ) }}</div>
+                <div class="col s2">{{ form_label(form.deliveryTime) }}{{ form_widget(form.deliveryTime, {"value": filter.deliveryTime } ) }}</div>
+                <div class="col s2">{{ form_label(form.score) }}{{ form_widget(form.score, {"value": filter.score } ) }}</div>
+                <div class="col s2 valign-wrapper">
+                    <button class="btn waves-effect waves-light" type="submit" name="action">Filtrer
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+                {{ form_end(form) }}
+            </div>
             <table class="striped responsive-table">
                 <thead>
                 <tr>
@@ -30,7 +47,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for supplier in suppliers %}
+                {% for supplier in data %}
                     <tr>
                         <td>{{ supplier.name }}</td>
                         <td>{{ supplier.postalCode }}</td>
@@ -55,7 +72,11 @@
             </table>
         </div>
     </div>
-
+    <div class="row center-align">
+        <div class="col s8 offset-s2">
+            {% include('@Gescom/Partials/paginator.html.twig') %}
+        </div>
+    </div>
     {% include('@Gescom/Modals/modalDeletion.html.twig') %}
 
 {% endblock %}

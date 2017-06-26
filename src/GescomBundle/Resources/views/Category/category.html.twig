@@ -9,8 +9,11 @@
                 </a>
             </div>
         {% endif %}
-        <div class="col s9  left-align">
+        <div class="col s3  left-align">
             <h4>Catégories</h4>
+        </div>
+        <div class="col s7 left-align">
+            {% include('@Gescom/Partials/paginator.html.twig') %}
         </div>
 
     </div>
@@ -28,7 +31,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for category in categories %}
+                {% for category in data %}
                     <tr id="tr_{{ category.id }}">
                         <td class="categoryName"><strong>{{ category.name }}</strong></td>
                         <td>{{ category.description }}</td>
@@ -48,6 +51,11 @@
                 {% endfor %}
                 </tbody>
             </table>
+        </div>
+    </div>
+    <div class="row center-align">
+        <div class="col s8 offset-s2">
+            {% include('@Gescom/Partials/paginator.html.twig') %}
         </div>
     </div>
 

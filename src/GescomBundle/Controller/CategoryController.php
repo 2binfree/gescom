@@ -12,13 +12,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class CategoryController extends Controller
 {
     /**
-     * @Route("/category", name="category")
+     * @Route("/category/{page}", name="category", requirements={"page" : "\d+"})
      */
-    public function indexAction()
+    public function indexAction($page = 1)
     {
-        $categories = $this->getDoctrine()->getRepository('GescomBundle:Category')->findAll();
         return $this->render('@Gescom/Category/category.html.twig', [
-            'categories'  => $categories,
+            'data'  => $this->get("gescom.navigator"),
             'documentType' => "Catégorie",
             'deletionUrl' => $this->generateUrl("delete_category", ['category' => 0]),
         ]);
@@ -37,7 +36,7 @@ class CategoryController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form  ->isValid()){
+        if ($form->isSubmitted() && $form->isValid()){
             $em->persist($category);
             $em->flush();
             return $this->redirectToRoute('category');

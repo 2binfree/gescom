@@ -18,7 +18,6 @@ class SupplierListType extends AbstractType
                 'class'         => 'GescomBundle\Entity\Supplier',
                 'choice_label'  => 'name',
                 'multiple'      => true,
-                'choice_value'
             ]);
     }
 

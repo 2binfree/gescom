@@ -10,4 +10,27 @@ namespace GescomBundle\Repository;
  */
 class CategoryRepository extends \Doctrine\ORM\EntityRepository
 {
+    const MAX_RESULT = 10;
+    public function getRowsByPage($page)
+    {
+        return $this->createQueryBuilder("c")
+                    ->select("c")
+                    ->orderBy("c.name", "ASC")
+                    ->getQuery();
+    }
+
+    public function getSuppliersByCategory($categoryId)
+    {
+        $qb = $this->createQueryBuilder("c")
+                   ->select(["p.name as product", "c.name as category", "s.name as supplier", "s.postalCode"])
+                   ->join("c.products", "p")
+                   ->join("p.productSupplier", "ps")
+                   ->join("ps.supplier", "s")
+                   ->where("c.id = $categoryId")
+                   ->andWhere("s.postalCode like '69%'")
+                   ->orderBy("p.name", "desc")
+                   ->getQuery();
+        return $qb->getResult();
+
+    }
 }

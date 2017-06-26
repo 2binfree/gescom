@@ -1,0 +1,27 @@
+<ul class="pagination">
+    <li class="{% if data.currentPage == 1 %}disabled{% else %}waves-effect{% endif %}">
+        <a href="{{ path(app.request.get('_route'), { 'page': 1, 'filter': filterURL | raw  }) }}">
+            <i class="material-icons">first_page</i>
+        </a>
+    </li>
+    <li class="{% if data.currentPage == 1 %}disabled{% else %}waves-effect{% endif %}">
+        <a href="{{ path(app.request.get('_route'), { 'page': data.prevPage, 'filter': filterURL | raw   }) }}">
+            <i class="material-icons">chevron_left</i>
+        </a>
+    </li>
+    {% for page in data.firstPage .. data.lastPage() %}
+        <li class="{% if page == data.currentPage %}disabled{% else %}waves-effect{% endif %}">
+            <a href="{{ path(app.request.get('_route'), { 'page': page, 'filter': filterURL | raw   }) }}">{{ page }}</a>
+        </li>
+    {% endfor %}
+    <li class="{% if data.currentPage == data.maxPage %}disabled{% else %}waves-effect{% endif %}">
+        <a href="{{ path(app.request.get('_route'), { 'page': data.nextPage, 'filter': filterURL | raw   }) }}">
+            <i class="material-icons">chevron_right</i>
+        </a>
+    </li>
+    <li class="{% if data.currentPage == data.maxPage %}disabled{% else %}waves-effect{% endif %}">
+        <a href="{{ path(app.request.get('_route'), { 'page': data.maxPage, 'filter': filterURL | raw   }) }}">
+            <i class="material-icons">last_page</i>
+        </a>
+    </li>
+</ul>

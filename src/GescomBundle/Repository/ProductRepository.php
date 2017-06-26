@@ -3,6 +3,10 @@
 namespace GescomBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use GescomBundle\Tools\AbstractEntityRepository;
+use GescomBundle\Tools\Navigator;
 
 /**
  * ProductRepository
@@ -12,6 +16,8 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductRepository extends EntityRepository
 {
+    const MAX_RESULT = 10;
+
     public function getProductById($id)
     {
         $query = $this->createQueryBuilder('p')
@@ -21,5 +27,21 @@ class ProductRepository extends EntityRepository
                       ->where("p.id = $id")
                       ->getQuery();
         return $query->getResult()[0];
+    }
+
+    /**
+     * @param int $page
+     * @return \Doctrine\ORM\Query
+     */
+    public function getRowsByPage(int $page = 1):Query
+    {
+        return $this->createQueryBuilder('p')
+                      ->join("p.category", "c")
+                      ->join("p.productSupplier", "ps")
+                      ->join("ps.supplier", "s")
+                      ->select("p, c, ps, s")
+                      ->setFirstResult(($page - 1) * self::MAX_RESULT)
+                      ->setMaxResults(self::MAX_RESULT)
+                      ->getQuery();
     }
 }

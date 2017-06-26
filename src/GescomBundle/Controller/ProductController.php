@@ -2,9 +2,11 @@
 
 namespace GescomBundle\Controller;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use GescomBundle\Entity\Product;
 use GescomBundle\Entity\ProductSupplier;
 use GescomBundle\Form\ProductType;
+use GescomBundle\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,14 +16,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends Controller
 {
     /**
-     * @Route("/product", name="product")
+     * @Route("/product/{page}", name="product", requirements={"page" : "\d+"})
+     * @param int $page
+     * @return Response
      */
-    public function indexAction()
+    public function indexAction($page = 1)
     {
-        // we retrieve all data from table through the entity
-        $products = $this->getDoctrine()->getRepository('GescomBundle:Product')->findAll();
         return $this->render('@Gescom/Product/product.html.twig', [
-            'products'  => $products,
+            'data'  => $this->get("gescom.navigator"),
             'documentType' => "Produit",
             'deletionUrl' => $this->generateUrl("delete_product", ['product' => 0]),
         ]);
@@ -34,6 +36,7 @@ class ProductController extends Controller
      */
     public function addAction(Request $request)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, "Impossible d'accèder à cette page");
         $product = new Product();
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(ProductType::class, $product);
