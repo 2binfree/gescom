@@ -1,3 +1,6 @@
+{% if filterURL is not defined %}
+    {% set filterURL = '' %}
+{% endif %}
 <ul class="pagination">
     <li class="{% if data.currentPage == 1 %}disabled{% else %}waves-effect{% endif %}">
         <a href="{{ path(app.request.get('_route'), { 'page': 1, 'filter': filterURL | raw  }) }}">

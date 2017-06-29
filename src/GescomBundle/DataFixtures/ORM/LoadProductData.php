@@ -33,7 +33,7 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
             $product = new Product();
             $product->setName($faker->unique()->words(2, true));
             $product->setDescription($faker->sentences(3, true));
-            $product->setCategory($this->getReference("categories_" . rand(0, 8)));
+            $product->setCategory($this->getReference("categories_" . rand(0, 27)));
             $suppliersTotal = rand(1, 3);
             $supplierStartNumber = rand(0, LoadSupplierData::MAX_SUPPLIERS - $suppliersTotal);
             for ($j=1; $j<=$suppliersTotal; $j++){

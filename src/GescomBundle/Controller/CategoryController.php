@@ -3,7 +3,9 @@
 namespace GescomBundle\Controller;
 
 use GescomBundle\Entity\Category;
+use GescomBundle\Form\CategoryFilterType;
 use GescomBundle\Form\CategoryType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,14 +14,25 @@ use Symfony\Component\Routing\Annotation\Route;
 class CategoryController extends Controller
 {
     /**
-     * @Route("/category/{page}", name="category", requirements={"page" : "\d+"})
+     * @Route("/category", name="category")
+     * @Method({"get", "post"})
+     * @param Request $request
+     * @return Response
      */
-    public function indexAction($page = 1)
+    public function indexAction(Request $request)
     {
+        $navigator = $this->get("gescom.navigator");
+        $filter = $navigator->getEntityFilter();
+
+        $form = $this->createForm(CategoryFilterType::class, $filter);
+
         return $this->render('@Gescom/Category/category.html.twig', [
             'data'  => $this->get("gescom.navigator"),
-            'documentType' => "Catégorie",
+            'filter' => $filter,
+            'filterURL' => http_build_query($filter),
+            'documentType' => "Catégories",
             'deletionUrl' => $this->generateUrl("delete_category", ['category' => 0]),
+            'form' => $form->createView(),
         ]);
     }
 

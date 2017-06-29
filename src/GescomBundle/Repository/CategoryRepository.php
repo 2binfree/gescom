@@ -11,25 +11,38 @@ namespace GescomBundle\Repository;
 class CategoryRepository extends \Doctrine\ORM\EntityRepository
 {
     const MAX_RESULT = 10;
-    public function getRowsByPage($page)
+    public function getRowsByPage($page, $filter)
     {
-        return $this->createQueryBuilder("c")
-                    ->select("c")
-                    ->orderBy("c.name", "ASC")
-                    ->getQuery();
+        $alias = "c";
+        $query = $this->createQueryBuilder("c")
+            ->select("c")
+            ->setFirstResult(($page - 1) * self::MAX_RESULT)
+            ->setMaxResults(self::MAX_RESULT)
+            ->orderBy("c.name", "ASC");
+        if (!is_null($filter)) {
+            foreach ($filter as $field => $value) {
+                if ($value !== "") {
+                    if (strpos($field, "_") !== 0) {
+                        $search = "$alias.$field like '$value%'";
+                        $query->andWhere($search);
+                    }
+                }
+            }
+        }
+        return $query->getQuery();
     }
 
     public function getSuppliersByCategory($categoryId)
     {
         $qb = $this->createQueryBuilder("c")
-                   ->select(["p.name as product", "c.name as category", "s.name as supplier", "s.postalCode"])
-                   ->join("c.products", "p")
-                   ->join("p.productSupplier", "ps")
-                   ->join("ps.supplier", "s")
-                   ->where("c.id = $categoryId")
-                   ->andWhere("s.postalCode like '69%'")
-                   ->orderBy("p.name", "desc")
-                   ->getQuery();
+            ->select(["p.name as product", "c.name as category", "s.name as supplier", "s.postalCode"])
+            ->join("c.products", "p")
+            ->join("p.productSupplier", "ps")
+            ->join("ps.supplier", "s")
+            ->where("c.id = $categoryId")
+            ->andWhere("s.postalCode like '69%'")
+            ->orderBy("p.name", "desc")
+            ->getQuery();
         return $qb->getResult();
 
     }

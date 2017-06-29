@@ -38,6 +38,25 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
             "Consommables",
             "Réseau",
             "Connectique",
+            "Smartphone",
+            "Alimentation",
+            "boitier",
+            "Carte mère",
+            "Processeur",
+            "Mémoire PC",
+            "Disque dur",
+            "SSD",
+            "Souris",
+            "Carte graphique",
+            "Ecran",
+            "Clé USB",
+            "Refroidissement",
+            "Casque",
+            "Switch",
+            "Routeur",
+            "Modem",
+            "CPL",
+            "Pont"
         ];
 
         foreach ($categoriesName as $key => $categoryName){

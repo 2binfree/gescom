@@ -1,3 +1,9 @@
+parameters:
+    memcached_host: 127.0.0.1
+    memcached_port: 11211
+    memcached_prefix: session_
+    memcached_expire: 14400
+
 services:
 #    gescom.example:
 #        class: GescomBundle\Example
@@ -12,3 +18,12 @@ services:
     gescom.navigator:
         class: GescomBundle\Tools\Navigator
         factory: "gescom.navigator.factory:get"
+
+    session.handler.memcached:
+        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHandler
+        arguments: [ "@session.memcached", { prefix: '%memcached_prefix%', expiretime: '%memcached_expire%' } ]
+
+    session.memcached:
+        class: Memcached
+        calls:
+            - [addServer, [%memcached_host%, %memcached_port%]]
