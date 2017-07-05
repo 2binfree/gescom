@@ -25,5 +25,6 @@ services:
 
     session.memcached:
         class: Memcached
+        arguments: ["gescom_mc"]
         calls:
-            - [addServer, [%memcached_host%, %memcached_port%]]
+            - [addServer, [%memcached_host%, %memcached_port%, 50]]
